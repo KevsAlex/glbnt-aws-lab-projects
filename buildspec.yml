@@ -1,0 +1,32 @@
+version: 0.2
+phases:
+  install:
+    commands:
+      - "curl -s -qL -o /usr/bin/jq https://stedolan.github.io/jq/download/linux64/jq"
+      - "chmod +x /usr/bin/jq"
+      - "cd /usr/bin"
+      - curl -s -qL -o terraform.zip "https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip"
+      - unzip terraform.zip -d /usr/bin/
+  pre_build:
+    commands:
+      - echo Build started on date
+      - echo "$CODEBUILD_WEBHOOK_HEAD_REF"
+      - echo "$BRANCH_NAME"
+      - echo "Triggered Branch $BRANCH_NAME"
+  build:
+    commands:
+      - cd "$CODEBUILD_SRC_DIR"
+      - export TF_VAR_environment=${AWS_ENVIRONMENT}
+      - export TF_VAR_region=us-east-1
+      - |
+        terraform init -backend-config=bucket=${TFSTATE_BUCKET} -backend-config=region=${AWS_DEFAULT_REGION}
+      - terraform $TF_ACTION -var="environment=${AWS_ENVIRONMENT}"
+      - echo completed!
+  post_build:
+    commands:
+      - echo Build completed on date
+      - echo "terraform $TF_ACTION completed on `date`"
+      - echo $CODEBUILD_WEBHOOK_HEAD_REF
+artifacts:
+  files:
+    - '**/*'
