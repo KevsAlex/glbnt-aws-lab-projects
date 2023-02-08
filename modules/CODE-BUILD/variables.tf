@@ -75,3 +75,12 @@ variable terraform-services {
 
 }
 
+variable GIT_HUB_ACCOUNT {
+  description = "GIT URL"
+}
+
+variable codestar-id{
+
+}
+
+

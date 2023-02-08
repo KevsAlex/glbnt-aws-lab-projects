@@ -8,9 +8,9 @@ locals {
   #--------------------------
   # KMS Key for allowing access to prod s3 bucket
   #---------------------------
-  kms_key_info= {
+  kms_key_info = {
     dev = {
-      id = null
+      id   = null
       type = null
     }
 
@@ -21,9 +21,15 @@ locals {
   }
 
   repo-branch-trigger = {
-    dev = "master"
-    prod  = "production"
+    dev  = "master"
+    prod = "production"
   }
+}
+
+data "aws_codestarconnections_connection" "git" {
+
+  arn = "arn:aws:codestar-connections:us-east-2:${var.AWS_ACCOUNT_ID}:connection/${var.codestar-id}"
+
 }
 
 #--------------------------
@@ -40,7 +46,7 @@ resource "aws_codepipeline" pipeline-kube-apply {
     location = aws_s3_bucket.pipeline-log-bucket.bucket
     type     = "S3"
     #dynamic encryption_key {
-#
+    #
     #  for_each = var.environment == "dev" ? [] : [true]
     #  content {
     #    id   = local.kms_key_info[var.environment]["id"]
@@ -152,7 +158,6 @@ resource "aws_codepipeline" pipeline-kube-apply {
   #}
 
 
-
 }
 
 resource "aws_codepipeline" pipeline-terraform {
@@ -181,26 +186,21 @@ resource "aws_codepipeline" pipeline-terraform {
 
     action {
 
-      name          = local.SOURCE
-      configuration = {
-        BranchName           = local.repo-branch-trigger[var.environment]
-        OutputArtifactFormat = "CODE_ZIP"
-        PollForSourceChanges = true
-        RepositoryName       = each.key
-      }
-      role_arn         = local.source_role_arn
-      input_artifacts  = []
-      category         = local.SOURCE
+      name = local.SOURCE
+
+      category         = "Source"
+      owner            = "AWS"
+      provider         = "CodeStarSourceConnection"
+      version          = "1"
       output_artifacts = [
         "SourceArtifact"
       ]
-      owner     = "AWS"
-      provider  = "CodeCommit"
-      region    = var.AWS_DEFAULT_REGION
-      run_order = 1
-      version   = "1"
 
-
+      configuration = {
+        ConnectionArn    = data.aws_codestarconnections_connection.git.arn
+        FullRepositoryId = "${var.GIT_HUB_ACCOUNT}/${each.key}"
+        BranchName       = local.repo-branch-trigger[var.environment]
+      }
     }
   }
 
@@ -226,7 +226,7 @@ resource "aws_codepipeline" pipeline-terraform {
 
 
       configuration = {
-        ProjectName = each.key
+        ProjectName          = each.key
         EnvironmentVariables = jsonencode([
           # In case we change to bucket state
           #{
@@ -266,7 +266,7 @@ resource "aws_codepipeline" pipeline-terraform {
         #NotificationArn = "arn:aws:sns:us-east-1:798152040102:repository-notifications-manual"
         ExternalEntityLink = "https://example.com"
         #NotificationArn = "arn:aws:sns:us-east-1:798152040102:CodeStarNotifications-deployment-notifications-5c98bb77192f3b5102a6be9d1d02d7a176e82a5f"
-        CustomData = "random comments"
+        CustomData         = "random comments"
       }
     }
   }
@@ -304,9 +304,6 @@ resource "aws_codepipeline" pipeline-terraform {
       }
     }
   }
-
-
-
 
 
 }
