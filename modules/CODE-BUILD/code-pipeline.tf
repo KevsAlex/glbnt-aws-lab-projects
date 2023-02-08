@@ -61,26 +61,21 @@ resource "aws_codepipeline" pipeline-kube-apply {
 
     action {
 
-      name          = local.SOURCE
-      configuration = {
-        BranchName           = local.repo-branch-trigger[var.environment]
-        OutputArtifactFormat = "CODE_ZIP"
-        PollForSourceChanges = true
-        RepositoryName       = each.key
-      }
-      #role_arn         = local.source_role_arn
-      input_artifacts  = []
-      category         = local.SOURCE
+      name = local.SOURCE
+
+      category         = "Source"
+      owner            = "AWS"
+      provider         = "CodeStarSourceConnection"
+      version          = "1"
       output_artifacts = [
         "SourceArtifact"
       ]
-      owner     = "AWS"
-      provider  = "CodeCommit"
-      region    = var.AWS_DEFAULT_REGION
-      run_order = 1
-      version   = "1"
 
-
+      configuration = {
+        ConnectionArn    = data.aws_codestarconnections_connection.git.arn
+        FullRepositoryId = "${var.GIT_HUB_ACCOUNT}/${each.key}"
+        BranchName       = local.repo-branch-trigger[var.environment]
+      }
     }
   }
 

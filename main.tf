@@ -20,6 +20,6 @@ module "CODE-BUILD" {
   vpc-id              = module.ENV.vpc-id
   vpc-security-groups = module.ENV.vpc-security-groups
   back-kube-apply     = local.eks-backend
-  GIT_HUB_ACCOUNT     = "https://github.com/KevsAlex"
+  GIT_HUB_ACCOUNT     = "KevsAlex"
   codestar-id      = "3a0f6061-0617-41c0-b629-1978b66be944"
 }

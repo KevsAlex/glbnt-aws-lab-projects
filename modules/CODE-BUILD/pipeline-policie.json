@@ -19,6 +19,13 @@
     },
     {
       "Action": [
+        "codestar-connections:UseConnection"
+      ],
+      "Resource": "*",
+      "Effect": "Allow"
+    },
+    {
+      "Action": [
         "codecommit:CancelUploadArchive",
         "codecommit:GetBranch",
         "codecommit:GetCommit",
@@ -43,7 +50,15 @@
     },
     {
       "Action": [
-        "codestar-connections:UseConnection"
+        "codestar-connections:UseConnection",
+        "codestar-connections:*"
+      ],
+      "Resource": "*",
+      "Effect": "Allow"
+    },
+    {
+      "Action": [
+        "codebuild:BatchGetProjects"
       ],
       "Resource": "*",
       "Effect": "Allow"
