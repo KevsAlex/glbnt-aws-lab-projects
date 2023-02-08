@@ -1,7 +1,7 @@
 locals {
 
   environments = {
-    dev = "stage"
+    dev = "dev"
     prod  = "prod"
   }
 
@@ -9,7 +9,7 @@ locals {
   # ID DE LA CUENTA DE AWS
   #-----------------
   AWS_ACCOUNT_ID = {
-    dev = "798152040102"
+    dev = "448500023013"
     prod  = "003297768880"
   }
 
@@ -18,8 +18,8 @@ locals {
   #-----------------
   subnets = {
     dev = [
-      "subnet-083bdc2ff24aa2a1f",
-      "subnet-0dd2517753d450874"
+      "subnet-0aa432c826355bbec",
+      "subnet-0e581e629c2a22424"
 
     ]
     prod = [
@@ -32,7 +32,7 @@ locals {
   # ID DE LA VPC
   #-----------------
   vpc-id = {
-    dev = "vpc-06c84e618b8462cac"
+    dev = "vpc-0d7dd169529239fed"
     prod  = "vpc-0fae6cf7d4296af6f"
 
   }
@@ -40,7 +40,7 @@ locals {
   # SECURITY GROUP DE VPC (Usado para code pipeline)
   #-----------------
   vpc-security-groups = {
-    dev = ["sg-03e17a2d49a18d56d"]
+    dev = ["sg-005cf679b06e2139c"]
     prod  = ["sg-0c758baa9fcf157cc"]
   }
 

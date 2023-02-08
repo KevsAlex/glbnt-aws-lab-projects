@@ -51,7 +51,7 @@ variable vpc-security-groups {
 }
 
 #-----------------
-# PIPELINE Donde se despliegan los servicios de EKS (kube apply)
+# PIPELINE EKS deployment
 #-----------------
 variable back-kube-apply {
   type    = list(map(string))

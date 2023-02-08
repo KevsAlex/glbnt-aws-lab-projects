@@ -15,6 +15,10 @@ locals {
 
   ]
 
+  services-backend = [
+  for key, value in local.services : value if (lookup(value, "backend-type", null) == "backend" ? true : false)
+  ]
+
   eks-backend = [
   for key, value in local.services : value if (lookup(value, "backend-type", null) == "eks" ? true : false)
   ]

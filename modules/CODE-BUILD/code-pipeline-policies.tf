@@ -283,8 +283,8 @@ resource "aws_iam_policy" "CodeBuildBasePolicy" {
         Effect   = "Allow"
         Resource = [
           //"arn:aws:s3:::codepipeline-${var.AWS_DEFAULT_REGION}-*",
-          aws_s3_bucket.omnia-s3-log-bucket.arn,
-          "${aws_s3_bucket.omnia-s3-log-bucket.arn}/*"
+          aws_s3_bucket.pipeline-log-bucket.arn,
+          "${aws_s3_bucket.pipeline-log-bucket.arn}/*"
 
         ]
       },
@@ -325,7 +325,7 @@ resource "aws_iam_policy" "CodeBuildBasePolicy" {
     ]
   })
 
-  depends_on = [aws_s3_bucket.omnia-s3-log-bucket]
+  depends_on = [aws_s3_bucket.pipeline-log-bucket]
 }
 
 resource "aws_iam_policy" "CodeBuildBasePolicyKubeApply" {
@@ -367,8 +367,8 @@ resource "aws_iam_policy" "CodeBuildBasePolicyKubeApply" {
         Effect   = "Allow"
         Resource = [
           //"arn:aws:s3:::codepipeline-${var.AWS_DEFAULT_REGION}-*",
-          aws_s3_bucket.omnia-s3-log-bucket.arn,
-          "${aws_s3_bucket.omnia-s3-log-bucket.arn}/*"
+          aws_s3_bucket.pipeline-log-bucket.arn,
+          "${aws_s3_bucket.pipeline-log-bucket.arn}/*"
 
         ]
       },
@@ -410,7 +410,7 @@ resource "aws_iam_policy" "CodeBuildBasePolicyKubeApply" {
     ]
   })
 
-  depends_on = [aws_s3_bucket.omnia-s3-log-bucket]
+  depends_on = [aws_s3_bucket.pipeline-log-bucket]
 }
 
 resource "aws_iam_policy" "CodeBuildBase-KMS-access" {
