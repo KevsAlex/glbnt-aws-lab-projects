@@ -62,10 +62,16 @@ resource "aws_iam_policy" "policie-repo-access" {
         ]
         Effect   = "Allow"
         Resource = [
-          //TODO :PARAMETRIZAR
           "arn:aws:iam::798152040102:role/*",
-          "arn:aws:iam::003297768880:role/*"
         ]
+      },
+      {
+        "Sid": "stsaccess",
+        "Effect": "Allow",
+        "Action": [
+          "sts:*"
+        ],
+        "Resource": "*"
       },
       {
         "Sid": "EKSREADONLY",
