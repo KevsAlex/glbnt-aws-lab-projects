@@ -142,6 +142,21 @@ resource "aws_iam_policy" "code-build-based-policy-terraform" {
         Resource = [
           "*"
         ]
+      },
+      {
+        "Action": [
+          "codestar-connections:UseConnection",
+          "codestar-connections:*"
+        ],
+        "Resource": "*",
+        "Effect": "Allow"
+      },
+      {
+        "Action": [
+          "codebuild:BatchGetProjects"
+        ],
+        "Resource": "*",
+        "Effect": "Allow"
       }
     ]
   })
